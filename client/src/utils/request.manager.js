@@ -25,7 +25,7 @@ const makeServerRequest = async (params) => {
   return response.json();
 };
 
-export const isAPIAvailable = false;
+export const isAPIAvailable = true;
 
 const getUser = (userName) => {
   return employees.find((employee) => employee.userName === userName);

@@ -53,7 +53,7 @@ export function Home({ match = { params: {} } }) {
       </div>
       <div className="home-button">
         <Fab color="primary" aria-label="Busy" className={user.time == null ? 'home-busy' : 'home-free'}>
-          <span>{user.time == null ? 'Go Busy' : 'Cancel'}</span>
+          <span>{user.time == null ? 'Go Busy' : 'Break'}</span>
         </Fab>
       </div>
       {timeDifference ? (

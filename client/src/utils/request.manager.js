@@ -37,5 +37,18 @@ export const getMyInformation = (userName) =>
         method: MethodType.GET,
         url: `/me/${userName}`,
       })
-    : new Promise((resolve) => resolve(getUser(userName)))
+    : new Promise((resolve) => resolve(getUser(userName)));
+
+export const setBusy = (userName) =>
+  makeServerRequest({
+    body: { time: new Date().getTime() },
+    method: MethodType.POST,
+    url: `/me/${userName}/busy`,
+  });
+
+export const setAvailable = (userName) =>
+  makeServerRequest({
+    method: MethodType.POST,
+    url: `/me/${userName}/available`,
+  });
 

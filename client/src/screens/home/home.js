@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Avatar, Button, Card, CardContent, Container, Fab, Typography} from '@material-ui/core'
 import './home.css';
-import { getMyInformation } from '../../utils/request.manager';
+import { getMyInformation, setAvailable, setBusy } from '../../utils/request.manager';
 import SecondScreen from "../../components/SecondScreen"
 import DoNotDisturbLight from "../../components/DoNotDisturbLight"
 import AppBar from '../../components/AppBar'
@@ -16,7 +16,12 @@ const getDateDifference = (date = 0) => {
 };
 
 const updateTimeDifference = (timeDifference, setTimeDifference) => {
-  setInterval(() => {
+  const interval = setInterval(() => {
+    if (timeDifference == null) {
+      clearInterval(interval);
+      return;
+    }
+    
     setTimeDifference(getDateDifference(timeDifference));
   }, 1000);
 };
@@ -54,7 +59,17 @@ export function Home({ match = { params: {} }, history }) {
           <DoNotDisturbLight isOn={timeDifference} />
         </div>
       </Container>
-  ) : null
+  ) : null;
+
+  if (timeDifference && timeDifference.getHours() === 0 && timeDifference.getMinutes() === 0) {
+    setUser({
+      ...user,
+      time: null,
+      queue: null,
+    });
+    setTimeDifference(null);
+    setAvailable(user.userName).then();
+  }
 
   return (
     <div className="home">
@@ -70,14 +85,35 @@ export function Home({ match = { params: {} }, history }) {
         </div>
       </div>
       <div className="home-button">
-        <Fab color="primary" aria-label="Busy" className={user.time == null ? 'home-busy' : 'home-free'}>
+        <Fab
+          color="primary"
+          aria-label="Busy"
+          className={user.time == null ? 'home-busy' : 'home-free'}
+          onClick={() => {
+            if (user.time) {
+              setAvailable(user.userName).then();
+              setUser({
+                ...user,
+                time: null,
+                queue: null,
+              });
+              setTimeDifference(null);
+            } else {
+              setBusy(user.userName).then();
+              setUser({
+                ...user,
+                time: new Date(),
+              });
+            }
+          }}
+        >
           <span>{user.time == null ? 'Go Busy' : 'Break'}</span>
         </Fab>
       </div>
 
       {timeDifference ? (
         <div className="home-time">
-          <p>{convertNumberToTwoDigit(timeDifference.getHours())} : {convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
+          <p>{convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
         </div>
       ) : null}
 

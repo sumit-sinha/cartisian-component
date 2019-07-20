@@ -14,7 +14,14 @@ export const employees = [
               "lastName": "Burger",
               "title": "Mobile Developer",
               "image": "https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Patrick_Star.svg/220px-Patrick_Star.svg.png"
-          }
+          },
+          {
+            "userName": "SuSi",
+            "firstName": "Sumit",
+            "lastName": "Sinha",
+            "title": "Web Developer",
+            "image": "https://vignette.wikia.nocookie.net/nickelodeon/images/0/02/SpongeBob_in_2018.png/revision/latest?cb=20190607225227"
+        }
       ]
   },
   {

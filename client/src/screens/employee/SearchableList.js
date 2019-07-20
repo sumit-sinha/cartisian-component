@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     Container, 
-    List, 
-    ListItem, 
-    ListItemAvatar, 
-    Avatar,
-    ListItemText,
-    ListItemSecondaryAction,
-    IconButton,
+    List
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import SearchBar from 'material-ui-search-bar'
+import EmployeeCard from './EmployeeCard'
 
 import { employees } from '../../mocks/employees'
 
@@ -19,9 +14,8 @@ function SearchableList(props) {
     const [fetchedData, setFetchedData] = useState([])
 
     useEffect(() => {
-        setFetchedData(employeeList)
-        
-        console.log(employeeList)
+        setFetchedData(employees)
+        console.log(employees)
         // const fetchData = async () => {
         //     const result = await fetch(
         //       '../../../employeeList.json',
@@ -50,7 +44,7 @@ function SearchableList(props) {
     function getItems() {
         const items = data || fetchedData
         return items.map((item) => {
-            return <EmployeeListItem key={item.userName} name={`${item.firstName} ${item.lastName}`} title={item.title} url={item.image}/>
+            return <EmployeeCard key={item.userName} name={`${item.firstName} ${item.lastName}`} title={item.title} url={item.image}/>
         })
     }
 
@@ -64,25 +58,6 @@ function SearchableList(props) {
                 {getItems()}
             </List>
         </Container>
-    )
-}
-
-function EmployeeListItem({ name, title, url }) {
-    return (
-        <ListItem>
-            <ListItemAvatar>
-                <Avatar url={url}/>
-            </ListItemAvatar>
-            <ListItemText
-                primary={name}
-                secondary={title}
-            />
-            {/* <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="Delete">
-                    <DeleteIcon />
-                </IconButton>
-            </ListItemSecondaryAction> */}
-        </ListItem>
     )
 }
 

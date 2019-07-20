@@ -8,7 +8,10 @@ import DoNotDisturbLight from "../../components/DoNotDisturbLight"
 const dummyImage = 'https://gradientjoy.com/300x200';
 
 const getDateDifference = (date = 0) => {
-  return new Date(new Date().getTime() - date);
+  const timeSinceStart = new Date(new Date().getTime() - date);
+  const remainingTime = new Date(new Date(25 * 60 * 1000).getTime() - timeSinceStart.getTime());
+
+  return remainingTime;
 };
 
 const updateTimeDifference = (timeDifference, setTimeDifference) => {
@@ -69,11 +72,13 @@ export function Home({ match = { params: {} } }) {
           <span>{user.time == null ? 'Go Busy' : 'Break'}</span>
         </Fab>
       </div>
+
       {timeDifference ? (
         <div className="home-time">
-          <p>{convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
+          <p>{convertNumberToTwoDigit(timeDifference.getHours())} : {convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
         </div>
       ) : null}
+
       <div className="second-screen-toggler">
         <SecondScreen
             openedText="Close Second Screen"
@@ -84,14 +89,14 @@ export function Home({ match = { params: {} } }) {
 
       {user.queue ? (
         <div className="home-queue-card-wrapper">
-          {user.queue.map((item) => (
-            <Card className="home-queue-card">
+          {user.queue.map((item, index) => (
+            <Card className="home-queue-card" key={`${index}: ${JSON.stringify(user)}`}>
               <CardContent>
                 <Typography className="home-queue-card-title" color="textSecondary" gutterBottom>
                   {item.title || 'No Job Title'}
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  {item.firstName}
+                  {item.firstName}&nbsp;
                   {item.lastName}
                 </Typography>
                 <Typography className="home-queue-card-pos" color="textSecondary">

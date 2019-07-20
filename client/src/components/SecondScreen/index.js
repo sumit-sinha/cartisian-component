@@ -21,7 +21,7 @@ export default ({ openedText, closedText, renderSecondScreen, initiallyOpened = 
     const toggler = (
         <Button
             onClick={() => setSecondScreenOpened(!secondScreenOpened)}
-            variant="contained"
+            variant="outlined"
             color="secondary"
             className={classes.button}
         >

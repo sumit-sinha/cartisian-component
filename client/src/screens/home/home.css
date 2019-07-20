@@ -87,3 +87,9 @@
 .home-queue-card-pos {
   font-size: 10px !important;
 }
+
+.second-screen-toggler {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}

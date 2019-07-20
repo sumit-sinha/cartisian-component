@@ -1,8 +1,6 @@
 import React from 'react'
 import { Container, TextField, Grid, Card, CardContent, Button, makeStyles } from '@material-ui/core'
 import useForm from '../../hooks/useForm'
-import SecondScreen from '../../components/SecondScreen'
-import DoNotDisturbLight from '../../components/DoNotDisturbLight'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -10,19 +8,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Login () {
+export function Login ({ history }) {
   const { formData, updateField } = useForm({
     username: ''
   })
   const classes = useStyles()
-
-  const renderSecondScreen = ({ isOpened }) => isOpened ? (
-      <Container>
-        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <DoNotDisturbLight isOn={true} />
-        </div>
-      </Container>
-  ) : null
 
   return (
       <Container maxWidth="sm">
@@ -50,18 +40,19 @@ export function Login () {
                   margin="normal"
               />
               <Button
-                  onClick={() => alert(`go to main screen - User: ${formData.username}, Password: ${formData.password}`)}
+                  onClick={() => {
+                    if (['PhLe', 'PaBu'].includes(formData.username)) {
+                      history.push(`/home/${formData.username}`)
+                    } else {
+                      alert(`${formData.username} is not registered...`)
+                    }
+                  }}
                   variant="contained"
                   color="primary"
                   className={classes.button}
               >
                 Login
               </Button>
-              <SecondScreen
-                  openedText="Close Second Screen"
-                  closedText="Open Second Screen"
-                  renderSecondScreen={renderSecondScreen}
-              />
             </Grid>
           </CardContent>
         </Card>

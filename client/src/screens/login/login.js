@@ -16,7 +16,6 @@ export function Login ({ history }) {
   const classes = useStyles()
 
     useEffect(() => {
-        console.log('hello')
         const id = getUserId()
         if (id) {
             history.push(`/home/${id}`)

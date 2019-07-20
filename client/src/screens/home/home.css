@@ -1,0 +1,95 @@
+.home-header {
+  margin: 20px 15px;
+  display: flex;
+}
+
+.home-image {
+  flex-grow: 0;
+  margin-right: 10px;
+}
+
+.home-image div {
+  border-radius: 0;
+}
+
+.home-labels {
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.home-labels p {
+  line-height: 1em;
+  margin: 0 10px 5px;
+}
+
+.home-labels p.home-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.home-labels p.home-description {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 106px;
+  text-align: justify;
+  padding-bottom: 1.71em;
+  margin-top: 10px;
+}
+
+.home-labels p.home-description:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: white;
+}
+
+.home-button {
+  max-width: 100px;
+  width: 100px;
+  margin: 0 auto;
+}
+
+.home-button button {
+  height: 100px;
+  width: 100px;
+}
+
+.home-button button.home-busy {
+  background-color: #46b53f;
+}
+
+.home-button button.home-free {
+  background-color: #c04223;
+}
+
+.home-time {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin-top: -15px;
+}
+
+.home-queue-card-wrapper {
+  margin: 10px 10px 0;
+}
+
+.home-queue-card-wrapper > div {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.home-queue-card-pos {
+  font-size: 10px !important;
+}
+
+.second-screen-toggler {
+  max-width: 300px;
+  margin: 0 auto 10px;
+  text-align: center;
+}

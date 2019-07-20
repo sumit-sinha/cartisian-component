@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser')
+var cors = require('cors')
 import express from 'express'
 const app = express()
 
@@ -14,6 +15,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}))
 
 app.get('/me/:id', function (req, res) {
     const id = req.params.id

@@ -8,14 +8,14 @@ const MethodType = {
 };
 
 const makeServerRequest = async (params) => {
-  const { body, headers: paramHeaders, method, url } = params;
+  const { body, headers: paramHeaders, method, host = 'http://localhost:3001', path } = params;
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
     ...paramHeaders,
   };
 
-  const response = await fetch(url, {
+  const response = await fetch(`${host}${path}`, {
     body,
     credentials: 'same-origin',
     headers,
@@ -35,7 +35,7 @@ export const getMyInformation = (userName) =>
   isAPIAvailable
     ? makeServerRequest({
         method: MethodType.GET,
-        url: `/me/${userName}`,
+        path: `/me/${userName}`,
       })
     : new Promise((resolve) => resolve(getUser(userName)));
 
@@ -43,12 +43,12 @@ export const setBusy = (userName) =>
   makeServerRequest({
     body: { time: new Date().getTime() },
     method: MethodType.POST,
-    url: `/me/${userName}/busy`,
+    path: `/me/${userName}/busy`,
   });
 
 export const setAvailable = (userName) =>
   makeServerRequest({
     method: MethodType.POST,
-    url: `/me/${userName}/available`,
+    path: `/me/${userName}/available`,
   });
 

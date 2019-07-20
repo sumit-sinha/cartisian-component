@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { 
     Container, 
-    List
+    List,
+    ListItem,
+    ListItemText,
+    Card,
+    CardContent,
 } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
 import SearchBar from 'material-ui-search-bar'
 import EmployeeCard from './EmployeeCard'
 import AppBar from '../../components/AppBar'
@@ -16,7 +19,6 @@ function EmployeeList({ history }) {
 
     useEffect(() => {
         setFetchedData(employees)
-        console.log(employees)
         // const fetchData = async () => {
         //     const result = await fetch(
         //       '../../../employeeList.json',
@@ -44,22 +46,35 @@ function EmployeeList({ history }) {
 
     function getItems() {
         const items = data || fetchedData
-        return items.map((item) => {
-            return <EmployeeCard key={item.userName} name={`${item.firstName} ${item.lastName}`} title={item.title} url={item.image}/>
-        })
+
+        return (
+            <List>
+                {
+                    items.map((item) => {
+                        return (
+                            <ListItem>
+                                <Card>
+                                    <CardContent>
+                                        <EmployeeCard key={item.userName} actualUser={"PaBu"} name={`${item.firstName} ${item.lastName}`} title={item.title} url={item.image} queue={item.queue}/>
+                                    </CardContent>
+                                </Card>
+                           </ListItem>
+                        )
+                })
+                }
+            </List>
+        )
     }
 
     return (
         <>
             <AppBar history={history} />
-            <Container>
+            <Container maxWidth="sm">
                 <SearchBar
-                    placeholder={"Enter name, title or project"}
+                    placeholder={"Search by name, title or project"}
                     onChange={filterList}
                 />
-                <List aria-label="Main mailbox folders">
-                    {getItems()}
-                </List>
+                {getItems()}
             </Container>
         </>
     )

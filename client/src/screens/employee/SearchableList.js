@@ -12,7 +12,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete'
 import SearchBar from 'material-ui-search-bar'
 
-import employeeList from '../../mocks/employees.json'
+import { employees } from '../../mocks/employees'
 
 function SearchableList(props) {
     const [data, setData] = useState()

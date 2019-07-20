@@ -9,7 +9,7 @@ import EmployeeCard from './EmployeeCard'
 
 import { employees } from '../../mocks/employees'
 
-function SearchableList(props) {
+function EmployeeList(props) {
     const [data, setData] = useState()
     const [fetchedData, setFetchedData] = useState([])
 
@@ -61,4 +61,4 @@ function SearchableList(props) {
     )
 }
 
-export default SearchableList
+export { EmployeeList }

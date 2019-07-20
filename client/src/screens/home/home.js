@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Avatar, Card, CardContent, Fab, Typography } from '@material-ui/core';
+import { Avatar, Card, CardContent, Container, Fab, Typography } from '@material-ui/core'
 import './home.css';
 import { getMyInformation } from '../../utils/request.manager';
+import SecondScreen from "../../components/SecondScreen"
+import DoNotDisturbLight from "../../components/DoNotDisturbLight"
 
 const dummyImage = 'https://gradientjoy.com/300x200';
 
@@ -42,6 +44,14 @@ export function Home({ match = { params: {} } }) {
     updateTimeDifference(user.time, setTimeDifference);
   }
 
+  const renderSecondScreen = ({ isOpened }) => isOpened ? (
+      <Container>
+        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <DoNotDisturbLight isOn={timeDifference} />
+        </div>
+      </Container>
+  ) : null
+
   return (
     <div className="home">
       <div className="home-header">
@@ -64,6 +74,14 @@ export function Home({ match = { params: {} } }) {
           <p>{convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
         </div>
       ) : null}
+      <div className="second-screen-toggler">
+        <SecondScreen
+            openedText="Close Second Screen"
+            closedText="Open Second Screen"
+            renderSecondScreen={renderSecondScreen}
+        />
+      </div>
+
       {user.queue ? (
         <div className="home-queue-card-wrapper">
           {user.queue.map((item) => (

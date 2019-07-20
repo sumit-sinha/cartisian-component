@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, Card, CardContent, Fab, Typography } from '@material-ui/core';
 import './home.css';
-import { employees } from '../../mocks/employees';
-
-const getUser = (userName) => {
-  return employees.find((employee) => employee.userName === userName);
-};
+import { getMyInformation } from '../../utils/request.manager';
 
 const dummyImage = 'https://gradientjoy.com/300x200';
 
@@ -25,16 +21,23 @@ const convertNumberToTwoDigit = (value) => {
   }
 
   return value;
-}
+};
 
 export function Home({ match = { params: {} } }) {
-  const user = getUser(match.params.id || 'PaBu');
+  const [user, setUser] = useState(null);
   const [timeDifference, setTimeDifference] = useState(null);
 
+  const paramId = match.params.id || 'PaBu';
   if (user == null) {
+    getMyInformation(paramId).then((result) => {
+      setUser(result);
+    });
+
     return <p>Unauthorised Access</p>;
   }
 
+  const userName = `${user.firstName} ${user.lastName}`;
+  const userImage = user.image || dummyImage;
   if (user.time) {
     updateTimeDifference(user.time, setTimeDifference);
   }
@@ -43,10 +46,10 @@ export function Home({ match = { params: {} } }) {
     <div className="home">
       <div className="home-header">
         <div className="home-image">
-          <Avatar src={user.image || dummyImage} style={{ height: 150, width: 150 }} />
+          <Avatar src={userImage} style={{ height: 150, width: 150 }} />
         </div>
         <div className="home-labels">
-          <p className="home-name">{`${user.firstName} ${user.lastName}`}</p>
+          <p className="home-name">{userName}</p>
           <p>{user.title}</p>
           <p className="home-description">{user.description}</p>
         </div>

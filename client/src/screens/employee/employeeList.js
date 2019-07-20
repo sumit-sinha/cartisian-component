@@ -6,10 +6,11 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete'
 import SearchBar from 'material-ui-search-bar'
 import EmployeeCard from './EmployeeCard'
+import AppBar from '../../components/AppBar'
 
 import { employees } from '../../mocks/employees'
 
-function EmployeeList(props) {
+function EmployeeList({ history }) {
     const [data, setData] = useState()
     const [fetchedData, setFetchedData] = useState([])
 
@@ -49,15 +50,18 @@ function EmployeeList(props) {
     }
 
     return (
-        <Container>
-            <SearchBar
-                placeholder={"Enter name, title or project"}
-                onChange={filterList}
-            />
-            <List aria-label="Main mailbox folders">
-                {getItems()}
-            </List>
-        </Container>
+        <>
+            <AppBar history={history} />
+            <Container>
+                <SearchBar
+                    placeholder={"Enter name, title or project"}
+                    onChange={filterList}
+                />
+                <List aria-label="Main mailbox folders">
+                    {getItems()}
+                </List>
+            </Container>
+        </>
     )
 }
 

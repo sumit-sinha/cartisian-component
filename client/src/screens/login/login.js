@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, TextField, Grid, Card, CardContent, Button, makeStyles } from '@material-ui/core'
 import useForm from '../../hooks/useForm'
+import { setUserId, getUserId } from '../../utils/user'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -13,6 +14,14 @@ export function Login ({ history }) {
     username: ''
   })
   const classes = useStyles()
+
+    useEffect(() => {
+        console.log('hello')
+        const id = getUserId()
+        if (id) {
+            history.push(`/home/${id}`)
+        }
+    }, [])
 
   return (
       <Container maxWidth="sm">
@@ -41,10 +50,12 @@ export function Login ({ history }) {
               />
               <Button
                   onClick={() => {
-                    if (['PhLe', 'PaBu'].includes(formData.username)) {
-                      history.push(`/home/${formData.username}`)
+                      const { username } = formData
+                    if (['PhLe', 'PaBu'].includes(username)) {
+                        setUserId(username)
+                      history.push(`/home/${username}`)
                     } else {
-                      alert(`${formData.username} is not registered...`)
+                      alert(`${username} is not registered...`)
                     }
                   }}
                   variant="contained"

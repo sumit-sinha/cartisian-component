@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Avatar, Card, CardContent, Container, Fab, Typography } from '@material-ui/core'
+import {Avatar, Button, Card, CardContent, Container, Fab, Typography} from '@material-ui/core'
 import './home.css';
 import { getMyInformation } from '../../utils/request.manager';
 import SecondScreen from "../../components/SecondScreen"
 import DoNotDisturbLight from "../../components/DoNotDisturbLight"
+import AppBar from '../../components/AppBar'
 
 const dummyImage = 'https://gradientjoy.com/300x200';
 
@@ -28,7 +29,7 @@ const convertNumberToTwoDigit = (value) => {
   return value;
 };
 
-export function Home({ match = { params: {} } }) {
+export function Home({ match = { params: {} }, history }) {
   const [user, setUser] = useState(null);
   const [timeDifference, setTimeDifference] = useState(null);
 
@@ -57,6 +58,7 @@ export function Home({ match = { params: {} } }) {
 
   return (
     <div className="home">
+      <AppBar history={history} />
       <div className="home-header">
         <div className="home-image">
           <Avatar src={userImage} style={{ height: 150, width: 150 }} />
@@ -85,6 +87,13 @@ export function Home({ match = { params: {} } }) {
             closedText="Open Second Screen"
             renderSecondScreen={renderSecondScreen}
         />
+        <Button
+            onClick={() => history.push('/employees')}
+            variant="outlined"
+            color="secondary"
+        >
+          I need to talk...
+        </Button>
       </div>
 
       {user.queue ? (

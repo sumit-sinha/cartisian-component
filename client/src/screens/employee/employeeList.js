@@ -42,7 +42,7 @@ function EmployeeList({ history }) {
     }
 
     function getItems() {
-        const items = (data && data.length) || fetchedData
+        const items = (data.length && data ) || fetchedData
         return (
             <List>
                 {

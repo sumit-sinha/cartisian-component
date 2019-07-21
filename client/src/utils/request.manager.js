@@ -1,4 +1,5 @@
 import { employees } from '../mocks/employees';
+import { getUserId } from '../utils/user'
 
 const MethodType = {
   GET: 'GET',
@@ -39,6 +40,13 @@ export const getMyInformation = (userName) =>
       })
     : new Promise((resolve) => resolve(getUser(userName)));
 
+export const getEmployees = () => {
+  return makeServerRequest({
+        method: MethodType.GET,
+        path: '/employees'
+  })
+}
+
 export const setBusy = (userName) =>
   makeServerRequest({
     body: { time: new Date().getTime() },
@@ -52,3 +60,18 @@ export const setAvailable = (userName) =>
     path: `/me/${userName}/available`,
   });
 
+export const addToUserQueue = (userName) => {
+  makeServerRequest({
+    body: { current_user: getUserId() },
+    method: MethodType.POST, 
+    path: `/employees/${userName}/appoint`
+  })
+}
+
+export const deleteFromUserQueue = (userName) => {
+  makeServerRequest({
+    body: { current_user: getUserId() },
+    method: MethodType.POST, 
+    path: `/employees/${userName}/cancel-appoint`
+  })
+}

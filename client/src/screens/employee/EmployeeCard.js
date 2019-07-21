@@ -12,10 +12,13 @@ import {
     Button,
     CardMedia,
     Typography,
-    CardContent
+    CardContent,
+    LinearProgress
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/core/styles';
+import { addToUserQueue, deleteFromUserQueue } from '../../utils/request.manager'
+import { getUserId } from '../../utils/user'
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -30,39 +33,39 @@ const useStyles = makeStyles(theme => ({
     // },
 }));
 
-function EmployeeListItem({ actualUser, name, title, url, queue = [] }) {
+function EmployeeListItem({ employeeName, name, title, url, queue = [] }) {
     const classes = useStyles();
     const [q, setQ] = useState(queue)
 
-
     function addToQueue() {
-        
         // do nothing when user is already in queue
-        if (q.find((item) => { return item.userName === actualUser })) { return }
+        if (q.find((item) => { return item.userName === getUserId() })) { return }
 
-        // TODO: push actualUser to server
         const queue = [...q]
         
         queue.push({ 
-            userName: actualUser, 
+            userName: getUserId(), 
             firstName: "Patrick", 
             lastName: "Burger",
             image: ""
         })
+        
+        addToUserQueue(employeeName)
         setQ(queue)
     }
 
     function deleteFromQueue() {
         // do nothing when queue is empty or actualUser is not in it
         const filtered = q.filter((item) => {
-            return item.userName !== actualUser
+            return item.userName !== getUserId()
         })
 
+        deleteFromUserQueue(employeeName)
         setQ(filtered)
-        // TODO: post delete to server with actualUser
     }
 
     function queueItems() {
+        console.log(q)
         return q.map((item) => {
             return (
                 <ListItem>
@@ -70,10 +73,10 @@ function EmployeeListItem({ actualUser, name, title, url, queue = [] }) {
                         <Avatar url={item.image} />
                     </ListItemAvatar>
                     <ListItemText
-                        primary={`${item.firstName} ${item.lastName}`}
+                        primary={(getUserId() === item.userName) ? 'You' : `${item.firstName} ${item.lastName}`}
                     />
                     {
-                        (actualUser === item.userName) ?
+                        (getUserId() === item.userName) ?
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="Delete" onClick={deleteFromQueue}>
                                     <DeleteIcon />
@@ -102,6 +105,7 @@ function EmployeeListItem({ actualUser, name, title, url, queue = [] }) {
                 {
                     queueItems().length ?
                         <CardContent>
+                            <LinearProgress marginBottom={5} variant="determinate" value={30} />
                             <Typography variant="subtitle">
                                 waiting list
                     </Typography>

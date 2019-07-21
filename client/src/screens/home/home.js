@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Button, Card, CardContent, Container, Fab, Typography} from '@material-ui/core'
 import './home.css';
 import { getMyInformation, setAvailable, setBusy } from '../../utils/request.manager';
@@ -15,18 +15,6 @@ const getDateDifference = (date = 0) => {
   return remainingTime;
 };
 
-const updateTimeDifference = (timeDifference, setTimeDifference) => {
-  const interval = setInterval(() => {
-    if (timeDifference == null) {
-      clearInterval(interval);
-      setTimeDifference(null)
-      return;
-    }
-    
-    setTimeDifference(getDateDifference(timeDifference));
-  }, 1000);
-};
-
 const convertNumberToTwoDigit = (value) => {
   if (value < 10) {
     return `0${value}`;
@@ -37,40 +25,36 @@ const convertNumberToTwoDigit = (value) => {
 
 export function Home({ match = { params: {} }, history }) {
   const [user, setUser] = useState(null);
-  const [timeDifference, setTimeDifference] = useState(null);
+  const [timeBool, triggerRerender] = useState(false)
 
   const paramId = match.params.id || 'PaBu';
-  if (user == null) {
+  useEffect(() => {
     getMyInformation(paramId).then((result) => {
       setUser(result);
     });
+  }, [])
+  if (user == null) {
 
     return <p>Unauthorised Access</p>;
   }
 
   const userName = `${user.firstName} ${user.lastName}`;
   const userImage = user.image || dummyImage;
-  if (user.time) {
-    updateTimeDifference(user.time, setTimeDifference);
-  }
+
+  setInterval(() => {
+    triggerRerender(!timeBool)
+  }, 1000);
+
+  const remainingTime = getDateDifference(user.time)
 
   const renderSecondScreen = ({ isOpened }) => isOpened ? (
       <Container>
         <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <DoNotDisturbLight isOn={timeDifference} />
+          <DoNotDisturbLight isOn={!!user.time} />
         </div>
       </Container>
   ) : null;
 
-  if (timeDifference && timeDifference.getHours() === 0 && timeDifference.getMinutes() === 0) {
-    setUser({
-      ...user,
-      time: null,
-      queue: null,
-    });
-    setTimeDifference(null);
-    setAvailable(user.userName).then();
-  }
 
   return (
     <div className="home">
@@ -91,27 +75,14 @@ export function Home({ match = { params: {} }, history }) {
           aria-label="Busy"
           className={user.time == null ? 'home-busy' : 'home-free'}
           onClick={() => {
-            if ((user.time && !timeDifference)) {
-              console.log('setAvailable')
-
+            if (user.time) {
               setAvailable(user.userName).then((response) => {
-                console.log('response set available', response)
-              });
-              // setUser({
-              //   ...user,a
-              //   time: null,
-              //   queue: null,
-              // });
-              // setTimeDifference(null);
+                setUser(response)
+              })
             } else {
-              console.log('setBusy')
               setBusy(user.userName).then((response) => {
-                console.log('response set busy', response)
+                setUser(response)
               });
-              // setUser({
-              //   ...user,
-              //   time: new Date(),
-              // });
             }
           }}
         >
@@ -119,9 +90,9 @@ export function Home({ match = { params: {} }, history }) {
         </Fab>
       </div>
 
-      {timeDifference && user.time ? (
+      {remainingTime && user.time ? (
         <div className="home-time">
-          <p>{convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
+          <p>{convertNumberToTwoDigit(remainingTime.getMinutes())} : {convertNumberToTwoDigit(remainingTime.getSeconds())}</p>
         </div>
       ) : null}
 

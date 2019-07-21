@@ -105,7 +105,7 @@ function EmployeeListItem({ employeeName, name, title, url, queue = [] }) {
                 {
                     queueItems().length ?
                         <CardContent>
-                            <LinearProgress marginBottom={5} variant="determinate" value={30} />
+                            <LinearProgress style={{marginBottom: 5}} variant="determinate" value={30} />
                             <Typography variant="subtitle">
                                 waiting list
                     </Typography>

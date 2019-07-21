@@ -1,4 +1,5 @@
 import { employees } from '../mocks/employees';
+import { getUserId } from '../utils/user'
 
 const MethodType = {
   GET: 'GET',
@@ -61,6 +62,7 @@ export const setAvailable = (userName) =>
 
 export const addToUserQueue = (userName) => {
   makeServerRequest({
+    body: { current_user: getUserId() },
     method: MethodType.POST, 
     path: `/employees/${userName}/appoint`
   })
@@ -68,6 +70,7 @@ export const addToUserQueue = (userName) => {
 
 export const deleteFromUserQueue = (userName) => {
   makeServerRequest({
+    body: { current_user: getUserId() },
     method: MethodType.POST, 
     path: `/employees/${userName}/cancel-appoint`
   })

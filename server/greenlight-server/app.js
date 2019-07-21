@@ -32,6 +32,7 @@ app.post('/me/:id/busy', function (req, res) {
     const id = req.params.id
     const me = employeeList[id]
     me.time = req.body.time
+    console.log('body', req.body)
     employeeList[id] = me
 
     res.setHeader('Content-Type', 'application/json')

@@ -11,12 +11,12 @@ const makeServerRequest = async (params) => {
   const { body, headers: paramHeaders, method, host = 'http://localhost:3001', path } = params;
   const headers = {
     Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     ...paramHeaders,
   };
 
   const response = await fetch(`${host}${path}`, {
-    body,
+    body: JSON.stringify(body),
     credentials: 'same-origin',
     headers,
     method: method || MethodType.GET,

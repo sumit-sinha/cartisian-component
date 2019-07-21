@@ -19,6 +19,7 @@ const updateTimeDifference = (timeDifference, setTimeDifference) => {
   const interval = setInterval(() => {
     if (timeDifference == null) {
       clearInterval(interval);
+      setTimeDifference(null)
       return;
     }
     
@@ -90,20 +91,27 @@ export function Home({ match = { params: {} }, history }) {
           aria-label="Busy"
           className={user.time == null ? 'home-busy' : 'home-free'}
           onClick={() => {
-            if (user.time) {
-              setAvailable(user.userName).then();
-              setUser({
-                ...user,
-                time: null,
-                queue: null,
+            if ((user.time && !timeDifference)) {
+              console.log('setAvailable')
+
+              setAvailable(user.userName).then((response) => {
+                console.log('response set available', response)
               });
-              setTimeDifference(null);
+              // setUser({
+              //   ...user,a
+              //   time: null,
+              //   queue: null,
+              // });
+              // setTimeDifference(null);
             } else {
-              setBusy(user.userName).then();
-              setUser({
-                ...user,
-                time: new Date(),
+              console.log('setBusy')
+              setBusy(user.userName).then((response) => {
+                console.log('response set busy', response)
               });
+              // setUser({
+              //   ...user,
+              //   time: new Date(),
+              // });
             }
           }}
         >
@@ -111,7 +119,7 @@ export function Home({ match = { params: {} }, history }) {
         </Fab>
       </div>
 
-      {timeDifference ? (
+      {timeDifference && user.time ? (
         <div className="home-time">
           <p>{convertNumberToTwoDigit(timeDifference.getMinutes())} : {convertNumberToTwoDigit(timeDifference.getSeconds())}</p>
         </div>
